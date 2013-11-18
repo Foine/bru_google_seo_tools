@@ -1,5 +1,5 @@
 <?
-Event::register('front.display', function($params)
+Event::register('front.pageFound', function($params)
 {
     //Rechercher la config du context. Si elle existe on envoie ce qu'il faut.
     $context = \Nos\Nos::main_controller()->getContext();
