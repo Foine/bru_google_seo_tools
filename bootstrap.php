@@ -5,7 +5,7 @@ Event::register('front.pageFound', function($params)
     $context = \Nos\Nos::main_controller()->getContext();
     $config = Bru\Google\Analytics\Controller_Admin_Config::getOptions();
     if ($config[$context]['full_script'] != '') {
-        if (\Str::begin_with($config[$context]['full_script'], '<script type="text/javascript">')) {
+        if (\Str::starts_with($config[$context]['full_script'], '<script type="text/javascript">')) {
             \Nos\Nos::main_controller()->addMeta($config[$context]['full_script']);
         } else {
             \Nos\Nos::main_controller()->addJavascriptInline($config[$context]['full_script']);
