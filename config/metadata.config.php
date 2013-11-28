@@ -13,6 +13,7 @@ return array(
     'namespace' => 'Bru\Google\Analytics',
     'permission' => array(
     ),
+    'extends' => 'noviusos_page',
     'requires' => array('lib_options'),
     'launchers' => array(
         'bru_google_analytics_launcher_configuration' => array(
