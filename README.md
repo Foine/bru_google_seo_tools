@@ -1,7 +1,7 @@
-bru_google_analytics
+bru_google_seo_tools
 ====================
 
-A Novius OS application that add google analytics tracking code in your website
+A Novius OS application that allow you to use Google's SEO tools easily
 
 Licensed under [MIT License](http://opensource.org/licenses/MIT)
 
@@ -15,6 +15,4 @@ How to use it
 --------------------
 Just download the app and put it in your local/applications folder.
 Install it via the app manager in your back office
-A new launcher appears ! Go in it and insert your UA id (or the entire script that google gives you).
-Refresh the page's cache.
-Your free to do what you want : Google Analytics is now tracking your website trafic !
+A new launcher appears ! Go in it to configure your Google SEO tools. More and more will be add in the future.

@@ -8,7 +8,7 @@
  * @link http://www.novius-os.org
  */
 
-namespace Bru\Google\Analytics;
+namespace Bru\Google\Seo\Tools;
 
 class Controller_Admin_Config extends \Lib\Options\Controller_Admin_Options
 {
