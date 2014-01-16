@@ -4,6 +4,9 @@ Event::register_function('front.display', function(&$html)
     //Rechercher la config du context. Si elle existe on envoie ce qu'il faut.
     $context = \Nos\Nos::main_controller()->getContext();
     $config = Bru\Google\Seo\Tools\Controller_Admin_Config::getOptions();
+    if (!isset($config[$context])) {
+        return false;
+    }
     $config = $config[$context];
     $full_script = '';
     if ($config['full_script'] != '') {
@@ -31,6 +34,9 @@ Event::register('front.pageFound', function($params)
     //Rechercher la config du context. Si elle existe on envoie ce qu'il faut.
     $context = \Nos\Nos::main_controller()->getContext();
     $config = Bru\Google\Seo\Tools\Controller_Admin_Config::getOptions();
+    if (!isset($config[$context])) {
+        return false;
+    }
     $config = $config[$context];
     if (isset($config['google_site_verification']) && !empty($config['google_site_verification'])) {
         $meta_tag = '<meta name="google-site-verification" content="'.$config['google_site_verification'].'" />';
