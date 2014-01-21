@@ -90,6 +90,6 @@ Event::register('front.404NotFound', function($params)
             exit();
         }
     }
-
+    return false;
 });
 
