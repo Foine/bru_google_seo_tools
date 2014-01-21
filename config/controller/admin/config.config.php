@@ -28,7 +28,7 @@ return array(
                         'col_number' => 6,
                         'view' => 'nos::form/expander',
                         'params' => array(
-                            'title'   => __('Webmaster tools'),
+                            'title'   => __('Google webmaster tools'),
                             'options' => array(
                                 'allowExpand' => false,
                             ),
@@ -36,6 +36,9 @@ return array(
                                 'view' => 'nos::form/fields',
                                 'params' => array(
                                     'fields' => array(
+                                        'label_verification',
+                                        'google_site_verification_html',
+                                        'label_or',
                                         'google_site_verification',
                                     ),
                                 ),
@@ -59,8 +62,28 @@ return array(
                 'type' => 'textarea',
             ),
         ),
+        'label_verification' => array(
+            'label' => '<strong>'.__('Méthode de vérification du site').'</strong>',
+            'form' => array(
+                'type' => 'text',
+                'tag' => 'label',
+            ),
+        ),
         'google_site_verification' => array(
-            'label' => __('Code de vérification du site'),
+            'label' => __('Contenu de la balise meta'),
+            'form' => array(
+                'type' => 'text',
+            ),
+        ),
+        'label_or' => array(
+            'label' => '<strong>'.__('OU (utiliser les deux méthode est inutile)').'</strong>',
+            'form' => array(
+                'type' => 'text',
+                'tag' => 'label',
+            ),
+        ),
+        'google_site_verification_html' => array(
+            'label' => __('Nom de la page html de vérification'),
             'form' => array(
                 'type' => 'text',
             ),

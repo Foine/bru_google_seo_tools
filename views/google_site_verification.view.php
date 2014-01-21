@@ -1,0 +1,1 @@
+google-site-verification: <?= $google_site_verification_code ?>
