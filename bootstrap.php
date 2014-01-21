@@ -1,13 +1,13 @@
 <?
 Event::register_function('front.display', function(&$html)
 {
-    //Rechercher la config du context. Si elle existe on envoie ce qu'il faut.
-    $context = \Nos\Nos::main_controller()->getContext();
+    //Search the context's config. If there is not : do nothing
     $config = Bru\Google\Seo\Tools\Controller_Admin_Config::getOptions();
-    if (!isset($config[$context])) {
+    $config = \Arr::get($config, \Nos\Nos::main_controller()->getContext());
+    if (empty($config)) {
         return false;
     }
-    $config = $config[$context];
+
     $full_script = '';
     if ($config['full_script'] != '') {
         if (\Str::starts_with($config['full_script'], '<script')) {
@@ -15,8 +15,23 @@ Event::register_function('front.display', function(&$html)
         } else {
             $full_script =  '<script type="text/javascript">'.$config['full_script'].'</script>';
         }
-    } else if ($config['google_analytics_tag'] != '') {
-        $full_script = \View::forge('bru_google_seo_tools::js_tag', array('tag' => $config['google_analytics_tag']));
+    } else {
+        $tag = \Arr::get($config, 'google_analytics_tag');
+        if (empty($tag)) return false;
+
+        if (\Arr::get($config, 'use_universal_analytics')) {
+            $view = 'bru_google_seo_tools::js_tag_universal_analitycs';
+            $datas = array(
+                'tag' => $tag,
+                'domain' => \Bru\Google\Seo\Tools\Tools_Google_Seo::getDomain(\Nos\Nos::main_controller()->getContext()),
+            );
+        } else {
+            $view = 'bru_google_seo_tools::js_tag';
+            $datas = array(
+                'tag' => $tag,
+            );
+        }
+        $full_script = \View::forge($view, $datas);
     }
 
     if ($full_script === '') return false;

@@ -1,4 +1,4 @@
-<?php if (!$tag) return '' ?>
+<?php if (empty($tag)) return '' ?>
 <script type="text/javascript">
     var _gaq = _gaq || [];
     _gaq.push(['_setAccount', '<?= $tag ?>']);

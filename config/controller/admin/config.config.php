@@ -18,6 +18,7 @@ return array(
                                     'fields' => array(
                                         'google_analytics_tag',
                                         'full_script',
+                                        'use_universal_analytics',
                                     ),
                                 ),
                             ),
@@ -64,5 +65,13 @@ return array(
                 'type' => 'text',
             ),
         ),
+        'use_universal_analytics' => array(
+            'label' => __('Utiliser Universal analytics'),
+            'form' => array(
+                'type' => 'checkbox',
+                'value' => '1',
+                'empty' => '0',
+            ),
+        )
     ),
 );
