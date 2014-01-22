@@ -76,7 +76,7 @@ return array(
             ),
         ),
         'label_or' => array(
-            'label' => '<strong>'.__('OU (utiliser les deux méthode est inutile)').'</strong>',
+            'label' => '<strong>'.__('OU (utiliser les deux méthodes est inutile)').'</strong>',
             'form' => array(
                 'type' => 'text',
                 'tag' => 'label',
