@@ -1,5 +1,5 @@
 <?php
-return array(
+$config = array(
     'layout' => array(
         'lines' => array(
             1 => array(
@@ -95,6 +95,57 @@ return array(
                 'value' => '1',
                 'empty' => '0',
             ),
+        ),
+        'label_cookie_tracking' => array(
+            'label' => '<strong>'.__('Cookie de tracking').'</strong>',
+            'form' => array(
+                'type' => 'text',
+                'tag' => 'label',
+            ),
+        ),
+        'tracking_cookie_name' => array(
+            'label' => __('Nom du cookie'),
+            'form' => array(
+                'type' => 'text',
+            ),
+        ),
+        'tracking_cookie_value' => array(
+            'label' => __('Valeur du cookie'),
+            'form' => array(
+                'type' => 'text',
+            ),
         )
     ),
 );
+
+$user = Session::user();
+$is_expert = $user->user_expert;
+if ($is_expert) {
+    $expert_part = array(
+        'cols' => array(
+            1 => array(
+                'col_number' => 6,
+                'view' => 'nos::form/expander',
+                'params' => array(
+                    'title'   => __('Paramètres expert'),
+                    'options' => array(
+                        'allowExpand' => true,
+                        'expanded' => false,
+                    ),
+                    'content' => array(
+                        'view' => 'nos::form/fields',
+                        'params' => array(
+                            'fields' => array(
+                                'label_cookie_tracking',
+                                'tracking_cookie_name',
+                                'tracking_cookie_value',
+                            ),
+                        ),
+                    ),
+                ),
+            ),
+        ),
+    );
+    $config['layout']['lines'][99] = $expert_part;
+}
+return $config;

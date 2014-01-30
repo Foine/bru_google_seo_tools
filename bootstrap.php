@@ -1,11 +1,23 @@
 <?
-Event::register_function('front.display', function(&$html)
+Event::register_function('front.response', function($params)
 {
+    $html =& $params['content'];
+
     //Search the context's config. If there is not : do nothing
     $config = Bru\Google\Seo\Tools\Controller_Admin_Config::getOptions();
-    $config = \Arr::get($config, \Nos\Nos::main_controller()->getContext());
+    $current_context = \Nos\Nos::main_controller()->getPage()->page_context;
+    $config = \Arr::get($config, $current_context);
     if (empty($config)) {
         return false;
+    }
+
+    //Check if a tracking cookie name is set
+    $cookie_name = \Arr::get($config, 'tracking_cookie_name', false);
+    if ($cookie_name) {
+        if (!\Cookie::get($cookie_name, false) || (\Cookie::get($cookie_name) != \Arr::get($config, 'tracking_cookie_value'))) {
+            //The tacking cookie is not set or his value is not good => we do not track the user.
+            return false;
+        }
     }
 
     $full_script = '';
@@ -23,7 +35,7 @@ Event::register_function('front.display', function(&$html)
             $view = 'bru_google_seo_tools::js_tag_universal_analitycs';
             $datas = array(
                 'tag' => $tag,
-                'domain' => \Bru\Google\Seo\Tools\Tools_Google_Seo::getDomain(\Nos\Nos::main_controller()->getContext()),
+                'domain' => \Bru\Google\Seo\Tools\Tools_Google_Seo::getDomain($current_context),
             );
         } else {
             $view = 'bru_google_seo_tools::js_tag';
