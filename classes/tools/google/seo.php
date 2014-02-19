@@ -18,4 +18,63 @@ class Tools_Google_Seo
         $domain = isset($match[1]) ? $match[1] : '';
         return $domain;
     }
+
+    public static function getAnalyticsTrackingScript() {
+
+        $config = Controller_Admin_Config::getOptions();
+        $current_context = \Nos\Nos::main_controller()->getPage()->page_context;
+        $config = \Arr::get($config, $current_context);
+        if (empty($config)) {
+            return '';
+        }
+
+        $full_script = '';
+        if ($config['full_script'] != '') {
+            if (\Str::starts_with($config['full_script'], '<script')) {
+                $full_script = $config['full_script'];
+            } else {
+                $full_script =  '<script type="text/javascript">'.$config['full_script'].'</script>';
+            }
+        } else {
+            $tag = \Arr::get($config, 'google_analytics_tag');
+            if (empty($tag)) return false;
+
+            if (\Arr::get($config, 'use_universal_analytics')) {
+                $view = 'bru_google_seo_tools::js_tag_universal_analitycs';
+                $datas = array(
+                    'tag' => $tag,
+                    'domain' => self::getDomain($current_context),
+                );
+            } else {
+                $view = 'bru_google_seo_tools::js_tag';
+                $datas = array(
+                    'tag' => $tag,
+                );
+            }
+            $full_script = \View::forge($view, $datas);
+        }
+
+        if ($full_script === '') {
+            return '';
+        } else {
+            //No script if it's a preview
+            if (\Nos\Nos::main_controller()->isPreview()) $full_script = '<!--'.$full_script.'-->';
+            return $full_script;
+        }
+    }
+
+    public static function getTrackingCookieName() {
+        //Search the context's config. If there is not : do nothing
+        $config = Controller_Admin_Config::getOptions();
+        $current_context = \Nos\Nos::main_controller()->getPage()->page_context;
+        $config = \Arr::get($config, $current_context);
+        if (empty($config)) {
+            return '';
+        }
+
+        //Check if a tracking cookie name is set
+        $cookie_name = \Arr::get($config, 'tracking_cookie_name', false);
+        return $cookie_name;
+    }
+
 }
