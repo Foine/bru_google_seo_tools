@@ -19,6 +19,11 @@ class Tools_Google_Seo
         return $domain;
     }
 
+    /**
+     * Returns the script tag wich contain the google analytics javascript
+     *
+     * @return string
+     */
     public static function getAnalyticsTrackingScript() {
 
         $config = Controller_Admin_Config::getOptions();
@@ -37,7 +42,7 @@ class Tools_Google_Seo
             }
         } else {
             $tag = \Arr::get($config, 'google_analytics_tag');
-            if (empty($tag)) return false;
+            if (empty($tag)) return '';
 
             if (\Arr::get($config, 'use_universal_analytics')) {
                 $view = 'bru_google_seo_tools::js_tag_universal_analitycs';
@@ -59,10 +64,13 @@ class Tools_Google_Seo
         } else {
             //No script if it's a preview
             if (\Nos\Nos::main_controller()->isPreview()) $full_script = '<!--'.$full_script.'-->';
-            return $full_script;
+            return (string)$full_script;
         }
     }
 
+    /**
+     * @return string
+     */
     public static function getTrackingCookieName() {
         //Search the context's config. If there is not : do nothing
         $config = Controller_Admin_Config::getOptions();
@@ -73,7 +81,7 @@ class Tools_Google_Seo
         }
 
         //Check if a tracking cookie name is set
-        $cookie_name = \Arr::get($config, 'tracking_cookie_name', false);
+        $cookie_name = \Arr::get($config, 'tracking_cookie_name', '');
         return $cookie_name;
     }
 
