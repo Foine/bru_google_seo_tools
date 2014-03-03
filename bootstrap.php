@@ -1,12 +1,12 @@
 <?
+//Event trigger after cache is writed
 Event::register_function('front.response', function($params)
 {
     $html =& $params['content'];
 
-    //Check if a tracking cookie name is set
-    $cookie_name = \Bru\Google\Seo\Tools\Tools_Google_Seo::getTrackingCookieName();
-    //If $cookie_name is empty, the tracking script is add in the cache
-    if (empty($cookie_name)) return false;
+    if(!\Bru\Google\Seo\Tools\Tools_Google_Seo::trackingAfterCache()) {
+        return false;
+    }
 
     $config = \Bru\Google\Seo\Tools\Controller_Admin_Config::getOptions();
     $current_context = \Nos\Nos::main_controller()->getPage()->page_context;
@@ -14,10 +14,15 @@ Event::register_function('front.response', function($params)
     if (empty($config)) {
         return false;
     }
-    if (!\Cookie::get($cookie_name, false) || (\Cookie::get($cookie_name) != \Arr::get($config, 'tracking_cookie_value'))) {
-        //The tacking cookie is not set or his value is not good => we do not track the user.
-        return false;
+
+    $cookie_name = \Bru\Google\Seo\Tools\Tools_Google_Seo::getTrackingCookieName();
+    if (!empty($cookie_name)) {
+        if (!\Cookie::get($cookie_name, false) || (\Cookie::get($cookie_name) != \Arr::get($config, 'tracking_cookie_value'))) {
+            //The tacking cookie is not set or his value is not good => we do not track the user.
+            return false;
+        }
     }
+
 
     $full_script = \Bru\Google\Seo\Tools\Tools_Google_Seo::getAnalyticsTrackingScript();
     if ($full_script === '') return false;
@@ -40,12 +45,12 @@ Event::register('front.pageFound', function($params)
         \Nos\Nos::main_controller()->addMeta($meta_tag);
     }
 });
+//Event trigger before cache is writed
 Event::register_function('front.display', function(&$html)
 {
-    //Check if a tracking cookie name is set
-    $cookie_name = \Bru\Google\Seo\Tools\Tools_Google_Seo::getTrackingCookieName();
-    //If $cookie_name is set, the tracking script is add after the cache, because we need to check the user's cookie
-    if (!empty($cookie_name)) return false;
+    if(\Bru\Google\Seo\Tools\Tools_Google_Seo::trackingAfterCache()) {
+        return false;
+    }
 
     $full_script = \Bru\Google\Seo\Tools\Tools_Google_Seo::getAnalyticsTrackingScript();
     if ($full_script === '') return false;

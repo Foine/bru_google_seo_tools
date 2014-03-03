@@ -105,5 +105,31 @@ class Tools_Google_Seo
             $full_script = '<!--'.$full_script.'-->';
             return $full_script;
         }
+
+    }
+
+    /**
+     * Check if the tracking script must be add after the cache
+     * @return bool
+     */
+    public static function trackingAfterCache() {
+        $config = Controller_Admin_Config::getOptions();
+        $current_context = \Nos\Nos::main_controller()->getPage()->page_context;
+        $config = \Arr::get($config, $current_context);
+        if (empty($config)) {
+            return false;
+        }
+
+        //Check if a tracking cookie name is set
+        $cookie_name = \Bru\Google\Seo\Tools\Tools_Google_Seo::getTrackingCookieName();
+        //If $cookie_name is set, the tracking script is add after the cache, because we need to check the user's cookie
+        if (!empty($cookie_name)) return true;
+
+        //If we don't want users to be tracked, we must out of the cache if the current user is logged in or not
+        if (\Arr::get($config, 'do_not_track_logged_user', 0)) {
+            return true;
+        }
+
+        return false;
     }
 }
