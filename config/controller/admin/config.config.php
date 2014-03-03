@@ -1,5 +1,9 @@
 <?php
 $config = array(
+    'form_name' => __('Your Google SEO Tools'),
+    'tab' => array(
+        'label' => 'Google SEO Tools',
+    ),
     'layout' => array(
         'lines' => array(
             1 => array(

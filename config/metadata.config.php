@@ -17,7 +17,7 @@ return array(
     'requires' => array('lib_options'),
     'launchers' => array(
         'bru_google_seo_tools_launcher_configuration' => array(
-            'name' => 'Google SEO Tools Configuration',
+            'name' => 'Google SEO Tools',
             'icon64' => 'static/apps/bru_google_seo_tools/images/google_analytics-64.png',
             'action' => array(
                 'action' => 'nosTabs',
