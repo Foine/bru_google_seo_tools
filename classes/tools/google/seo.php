@@ -14,7 +14,7 @@ class Tools_Google_Seo
         $url = \Nos\Tools_Url::context($context);
         $sHttpProtocol = 'http://';
         if (\Str::starts_with($url, $sHttpProtocol)) $url = substr($url, strlen($sHttpProtocol));
-        preg_match('#^[\w.]*\.(\w+\.[a-z]{2,6})[\w/._-]*$#',$url,$match);
+        preg_match('#^[\w.-]*\.(\w+\.[a-z]{2,6})[\w/._-]*$#',$url,$match);
         $domain = isset($match[1]) ? $match[1] : '';
         return $domain;
     }
@@ -62,8 +62,7 @@ class Tools_Google_Seo
         if ($full_script === '') {
             return '';
         } else {
-            //No script if it's a preview
-            if (\Nos\Nos::main_controller()->isPreview()) $full_script = '<!--'.$full_script.'-->';
+            self::_doNotTrack($full_script);
             return (string)$full_script;
         }
     }
@@ -85,4 +84,26 @@ class Tools_Google_Seo
         return $cookie_name;
     }
 
+    /**
+     * Return the script embed in html comments if we are in a case that user do not want the page to appears in Google Analytics
+     * @return string
+     */
+    protected  static function _doNotTrack(&$full_script) {
+        //Search the context's config. If there is not : do nothing
+        $config = Controller_Admin_Config::getOptions();
+        $current_context = \Nos\Nos::main_controller()->getPage()->page_context;
+        $config = \Arr::get($config, $current_context);
+
+        //No tracking if it's a preview
+        if (\Nos\Nos::main_controller()->isPreview()) {
+            $full_script = '<!--'.$full_script.'-->';
+            return $full_script;
+        }
+
+        //No script if we do not want logged in users to be tracked
+        if (\Arr::get($config, 'do_not_track_logged_user', 0) && \Nos\Auth::check()) {
+            $full_script = '<!--'.$full_script.'-->';
+            return $full_script;
+        }
+    }
 }

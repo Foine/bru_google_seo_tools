@@ -19,6 +19,7 @@ $config = array(
                                         'google_analytics_tag',
                                         'full_script',
                                         'use_universal_analytics',
+                                        'do_not_track_logged_user',
                                     ),
                                 ),
                             ),
@@ -114,7 +115,15 @@ $config = array(
             'form' => array(
                 'type' => 'text',
             ),
-        )
+        ),
+        'do_not_track_logged_user' => array(
+            'label' => __('Exclure les administrateurs'),
+            'form' => array(
+                'type' => 'checkbox',
+                'value' => '1',
+                'empty' => '0',
+            ),
+        ),
     ),
 );
 
