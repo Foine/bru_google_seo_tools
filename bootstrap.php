@@ -29,7 +29,7 @@ Event::register_function('front.response', function($params)
 
     preg_match("/<\/head>/", $html, $matches);
     if (!empty($matches) && isset($matches[0])) {
-        $html = str_replace($matches[0], $matches[0]." \n".$full_script."\n", $html);
+        $html = str_replace($matches[0], "\n".$full_script."\n".$matches[0], $html);
     }
 });
 Event::register('front.pageFound', function($params)
@@ -57,7 +57,7 @@ Event::register_function('front.display', function(&$html)
 
     preg_match("/<\/head>/", $html, $matches);
     if (!empty($matches) && isset($matches[0])) {
-        $html = str_replace($matches[0], " \n".$full_script."\n".$matches[0], $html);
+        $html = str_replace($matches[0], "\n".$full_script."\n".$matches[0], $html);
     }
 });
 Event::register('front.404NotFound', function($params)
