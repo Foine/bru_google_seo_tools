@@ -52,6 +52,31 @@ $config = array(
                     ),
                 ),
             ),
+            99 => array(
+                'cols' => array(
+                    1 => array(
+                        'col_number' => 6,
+                        'view' => 'nos::form/expander',
+                        'params' => array(
+                            'title'   => __('Paramètres expert'),
+                            'options' => array(
+                                'allowExpand' => true,
+                                'expanded' => false,
+                            ),
+                            'content' => array(
+                                'view' => 'nos::form/fields',
+                                'params' => array(
+                                    'fields' => array(
+                                        'label_cookie_tracking',
+                                        'tracking_cookie_name',
+                                        'tracking_cookie_value',
+                                    ),
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+            ),
         ),
     ),
     'fields' => array(
@@ -107,18 +132,21 @@ $config = array(
                 'type' => 'text',
                 'tag' => 'label',
             ),
+            'expert' => true,
         ),
         'tracking_cookie_name' => array(
             'label' => __('Nom du cookie'),
             'form' => array(
                 'type' => 'text',
             ),
+            'expert' => true,
         ),
         'tracking_cookie_value' => array(
             'label' => __('Valeur du cookie'),
             'form' => array(
                 'type' => 'text',
             ),
+            'expert' => true,
         ),
         'do_not_track_logged_user' => array(
             'label' => __('Exclure les administrateurs'),
@@ -131,34 +159,4 @@ $config = array(
     ),
 );
 
-$user = Session::user();
-$is_expert = $user->user_expert;
-if ($is_expert) {
-    $expert_part = array(
-        'cols' => array(
-            1 => array(
-                'col_number' => 6,
-                'view' => 'nos::form/expander',
-                'params' => array(
-                    'title'   => __('Paramètres expert'),
-                    'options' => array(
-                        'allowExpand' => true,
-                        'expanded' => false,
-                    ),
-                    'content' => array(
-                        'view' => 'nos::form/fields',
-                        'params' => array(
-                            'fields' => array(
-                                'label_cookie_tracking',
-                                'tracking_cookie_name',
-                                'tracking_cookie_value',
-                            ),
-                        ),
-                    ),
-                ),
-            ),
-        ),
-    );
-    $config['layout']['lines'][99] = $expert_part;
-}
 return $config;
